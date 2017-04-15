@@ -1,0 +1,49 @@
+﻿@using A4_InsecureDirectObjectReferences.Models
+@model List<Message>
+@{
+    ViewBag.Title = "Your Messages";
+}
+<h2>@ViewBag.Title.</h2>
+<br />
+<div>
+    <ul class="media-list">
+        @{
+            foreach (Message msg in Model)
+            {
+                <li class="media well well-small">
+                    <img class="pull-left media-object" data-src="holder.js/64x64" alt="64x64" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACe0lEQVR4Xu2Y54oqQRSES8WIqIgJxICKCRFB3/8JxARGzAoGzBgQFJfToLj3snd3Z3Dvoqf/CGKf6a6uU9/YisViccELDwULwA7gFuAMeOEMBIcgU4ApwBRgCjAFXlgBxiBjkDHIGGQMvjAE+M8QY5AxyBhkDDIGGYMvrIBsDM5mM9TrdRwOB2i1WoTDYTidzneS1mo1DIdDhEIh+P3+T+V+RM2PHipLgO12i3w+D5PJhGAwiEKhAI1Gg1QqJT5pLBYLlEolnE6nLwnwiJr/UlyWAP1+H61WC7FYDC6X66/nnM9nFItFLJdLXC6XmwCdTgftdht2u118R8LRb5PJJNbrtaSan9rqgx/IEqBSqWA8HgvrUwvodDpEo1HYbDbxuKtAFosF8/n8JgC5IZfLYb/fC/eQQNQa5CKpNf+LAOVyGaPRSJw+bYBOUqVSIZPJCMtTe+j1epAA5JT7DCDhqtWqOHmj0Yh0Og21Wg05NaWIIMsBtNjJZIJ4PC5EoA2ThROJBCjIptOpsPVqtUKz2XwnAAmUzWZBPe/1ekV40pBT88cF6PV64mQjkQjcbvet32kz3W5XWPzPcXXBNQcoG6iFSCiz2Qw5NX9cgGtiGwwG0fsUeEql8mbn64JIjHsHXOcpFAo4HA4MBgNYrVZBj91uJ5z03ZpSNk9zZLUAFaAWaDQaOB6PYtHUDtTz9+NeAJ/Pd7N5IBCAx+MR2bHZbG5O+m7Nr7xbPOQ9QKrqv2mebAf8ps1IWQsLwDdCfCPEN0J8IyQlPZ9lDlOAKcAUYAowBZ4l0aXsgynAFGAKMAWYAlLS81nmMAWYAkwBpgBT4FkSXco+mAKvToE3EUN4nw3vFosAAAAASUVORK5CYII=" style="width: 64px; height: 64px;">
+                    <div class="media-body">
+                        <h4 class="media-heading">@(msg.Subject)</h4>
+                        <i>@(msg.From)</i>
+                        <p><a href="/Account/GetMessage?userId=@(msg.To)&messageId=@(msg.Id)">Click to read content</a></p>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+<script>
+    var links = document.querySelectorAll('.media-list a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click',
+            function (e) {
+                var link = this;
+                e.preventDefault();
+
+                var result = fetch(link.href, { credentials: "include" });
+                result.then(function (response) {
+                    if (response.ok) {
+                        console.log('response', response);
+                        console.log('header', response.headers.get('Content-Type'));
+                        return response.json();
+                    }
+                }).then(function (result) {
+                    link.outerHTML = result.Content;
+                }).catch(function (ex) {
+                    console.log('failed', ex);
+                });
+            });
+
+    }
+</script>

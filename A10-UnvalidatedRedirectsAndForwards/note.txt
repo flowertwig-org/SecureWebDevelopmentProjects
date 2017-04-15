@@ -1,0 +1,8 @@
+http://localhost:53016/Account/Register.aspx?ReturnUrl=//flowertwig.org/cv
+http://localhost:53016/Account/Register.aspx?ReturnUrl=//goo.gl/kIRmcH
+
+
+            if (!OpenAuth.IsLocalUrl(continueUrl))
+            {
+                continueUrl = "~/";
+            }

@@ -1,0 +1,97 @@
+EXPLOIT
+	http://localhost:56426/News?tag=1%20OR%201=1
+	http://localhost:56426/News?tag=1 AND EXISTS (select Email from AspNetUsers WHERE Email = 'mattias.blomqvist@cybercom.com')
+
+            string query = "select * from Calendar, CalendarItemTags " +
+                           "WHERE Calendar.Id = CalendarItemTags.CalendarItemId AND CalendarItemTags.TagItemId = " + tagId;
+
+            string query = "select Email as Header, PasswordHash as Description from AspNetUsers";
+
+            string query = "select * from Calendar, CalendarItemTags " +
+                           "WHERE Calendar.Id = CalendarItemTags.CalendarItemId AND CalendarItemTags.TagItemId = " + tagId + " AND EXISTS 
+      (select Email from AspNetUsers WHERE Email = 'mattias.blomqvist@cybercom.com')";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SQL Params
+
+            string query = "select * from Calendar " +
+                           "WHERE Id IN (select CalendarItemId from CalendarItemTags WHERE TagItemId = @tag)";
+
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "tag";
+            param.Value = tagId;
+            cmd.Parameters.Add(param);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Input Validation
+	int.TryParse
+
+	secure by using objects
+
+        public class Tag
+        {
+            public int Id { get; protected set; }
+
+            public Tag(string tagId)
+            {
+                int value;
+                if (!int.TryParse(tagId, out value))
+                {
+                    throw new ArgumentException("Value has to be parsable to int", nameof(tagId));
+                }
+                Id = value;
+            }
+        }
+
+	

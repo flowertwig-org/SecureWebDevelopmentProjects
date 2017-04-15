@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Search";
+}
+<h2>@ViewBag.Title.</h2>
+
+<p><input type="search" /><button>Search</button></p>
+
+<div class="hmm" style="display: none;background-color: darkblue; padding: 5px; margin: 5px 0; color:white">Searched for: <span class="searched-for"></span></div>
+<div class="results" style="word-wrap: break-word"></div>
+<script>
+        var search = function (query) {
+
+            var stateObj = { foo: "bar" };
+            history.pushState(stateObj, "page 2", "?query=" + query);
+
+            var result = fetch('/test.aspx?query=' + query);
+            //var result = fetch('/Home/Search?query=' + query, { method: "POST" });
+            result.then(function(response) {
+                if (response.ok) {
+                    console.log('response', response);
+                    console.log('header', response.headers.get('Content-Type'));
+                    return response.json();
+                }
+            }).then(function (result) {
+                document.querySelector('.hmm').style.display = 'block';
+                document.querySelector('.searched-for').innerHTML = result.Query;
+                var results = document.querySelector('.results');
+                results.innerHTML = '';
+                for (var i = 0; i < result.Items.length; i++) {
+                    var element = document.createElement('div');
+
+                    var header = document.createElement('strong');
+                    header.innerHTML = result.Items[i].Header;
+                    element.insertAdjacentElement('beforeend', header);
+
+                    var ingress = document.createElement('p');
+                    ingress.innerHTML = result.Items[i].Url;
+                    element.insertAdjacentElement('beforeend', ingress);
+
+                    results.insertAdjacentElement('beforeend', element);
+                }
+            }).catch(function(ex) {
+                console.log('failed', ex);
+            });
+        }
+
+        var input = document.querySelector('input[type=search]');
+        input.addEventListener('change',
+            function(e) {
+                search(input.value);
+            });
+
+        var query = window.location.search.replace('?query=', '');
+        input.value = query;
+        if (input.value.length > 0) {
+            search(input.value);
+        }
+</script>
